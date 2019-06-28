@@ -1,13 +1,11 @@
 import sys
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
+
 from PyQt5.QtWidgets import *
 from translate import Translator
 
+
 ### Author
 # @Dery Sudrajat
-
-from PyQt5.QtWidgets import *
 
 
 class TranslateForm(QWidget):
