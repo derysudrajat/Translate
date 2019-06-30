@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import *
 
 class IndoNgapakForm(QWidget):
     def __init__(self):
-        super().__init__()
+        super(IndoNgapakForm, self).__init__()
         self.setupUI()
 
     def setupUI(self):
@@ -143,10 +143,8 @@ class IndoNgapakForm(QWidget):
             strResult = self.nTrans(data, indo, ngapak)
         else:
             strResult = self.nTrans(data, ngapak, indo)
-
         print(indo)
         print(ngapak)
-
         print(strResult)
         self.leTo.setText(strResult)
 
