@@ -6,8 +6,9 @@
 #
 # WARNING! All changes made in this file will be lost!
 
+import csv
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 from translate import Translator
 
 
@@ -37,14 +38,15 @@ class Ui_MainWindow(object):
         """
         MainWindow.setObjectName("My Translate")
         MainWindow.resize(415, 505)
-        '''
+        """
         mengatur Combo box untuk bahasa awal
         :param langFrom
-        '''
+        """
         self.langFrom.setObjectName("langFrom")
         self.langFrom.addItem("Indonesia")
         self.langFrom.addItem("English")
         self.langFrom.addItem("Japan")
+        self.langFrom.addItem("Ngapak")
         '''
         mengatur Combo boc untuk bahasa tujuan
         :param langTo
@@ -53,6 +55,7 @@ class Ui_MainWindow(object):
         self.langTo.addItem("English")
         self.langTo.addItem("Indonesia")
         self.langTo.addItem("Japan")
+        self.langTo.addItem("Ngapak")
         '''
         mengatur Buttonn untuk swap bahasa
         :param btnSwap
@@ -121,8 +124,11 @@ class Ui_MainWindow(object):
         elif lang == "Indonesia":
             mLang = "id"
             return mLang
-        else:
+        elif lang == "Japan":
             mLang = "ja"
+            return mLang
+        else:
+            mLang = "ng"
             return mLang
 
     '''
@@ -136,18 +142,81 @@ class Ui_MainWindow(object):
         self.langTo.setCurrentText(txtF)
 
     '''
+    fungsi untuk mengembalikan hasil translasi lokal indonesia - ngapak
+    '''
+
+    def nTrans(self, data, dataFrom, dataTo):
+        translate = []
+        strResult = ""
+        for a in data:
+            stat = False
+            for i, x in enumerate(dataFrom):
+                if a == x:
+                    translate.append(dataTo[i])
+                    stat = True
+            if stat != True:
+                translate.append(a)
+
+        for j, b in enumerate(translate):
+            strResult += translate[j] + " "
+        return strResult
+
+    '''
+        method untuk menerjemahkan text antara bahasa indonesia dan ngapak
+    '''
+
+    def ngapakTrans(self, mText, langF):
+        data = mText.lower().split()
+        print (data)
+        indo = []
+        ngapak = []
+        strResult = ""
+        '''
+        membaca data dari datalang.csv dan menyimpan pada
+        varible indo dan ngapak
+        '''
+        with open('datalang.csv') as csvDataFile:
+            csvReader = csv.reader(csvDataFile)
+            for row in csvReader:
+                indo.append(row[0])
+                ngapak.append(row[1])
+        if langF == "id":
+            strResult = self.nTrans(data, indo, ngapak)
+        else:
+            strResult = self.nTrans(data, ngapak, indo)
+        print(indo)
+        print(ngapak)
+        print(strResult)
+        self.txtTo.setText(strResult)
+
+    '''
     method untuk menampilkan text yang sudah di terjemahkan dari bahasa awal ke bahasa tujuan
     '''
 
     def Show(self):
+        self.txtTo.setText("Translating...")
         lgF = self.cekLang(self.langFrom.currentText())
         lgT = self.cekLang(self.langTo.currentText())
-        indoTrans = Translator(to_lang="id")
-        engTrans = Translator(from_lang=lgF, to_lang=lgT)
-        # indoTxt = indoTrans.translate("I was buy new book")
-        engTxt = engTrans.translate(self.txtFrom.toPlainText())
-        # print("Indo: \n", indoTxt)
-        self.txtTo.setText(engTxt)
+        print(lgF, lgT)
+        if (lgF == "id" and lgT == "ng") or (lgF == "ng" and lgT == "id"):
+            try:
+                self.ngapakTrans(self.txtFrom.toPlainText(), lgF)
+            except:
+                self.txtTo.setText("Please try again...")
+        elif lgT == "ng" and lgF != "id":
+            engTrans = Translator(from_lang=lgF, to_lang="id")
+            try:
+                engTxt = engTrans.translate(self.txtFrom.toPlainText())
+                self.ngapakTrans(engTxt, "id")
+            except:
+                self.txtTo.setText("Please try again...")
+        else:
+            engTrans = Translator(from_lang=lgF, to_lang=lgT)
+            try:
+                engTxt = engTrans.translate(self.txtFrom.toPlainText())
+                self.txtTo.setText(engTxt)
+            except:
+                self.txtTo.setText("Please try again...")
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
