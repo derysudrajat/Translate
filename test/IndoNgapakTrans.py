@@ -92,6 +92,18 @@ class IndoNgapakForm(QWidget):
         self.langFrom.setCurrentText(txtT)
         self.langTo.setCurrentText(txtF)
 
+    def cekSym(self, str):
+        afound = False
+        for i, x in enumerate(str):
+            if x == "?":
+                afound = True
+                break
+            else:
+                print("false")
+                afound = False
+
+        return afound
+
     '''
        method untuk mendapatkan string kata yang sudah di
        terjemahkan
@@ -105,12 +117,21 @@ class IndoNgapakForm(QWidget):
         strResult = ""
         for a in data:
             stat = False
+            ff = self.cekSym(a)
             for i, x in enumerate(dataFrom):
-                if a == x:
-                    translate.append(dataTo[i])
-                    stat = True
+                if ff == True:
+                    if a.replace("?", "") == x:
+                        translate.append(dataTo[i] + "?")
+                        stat = True
+                else:
+                    if a == x:
+                        translate.append(dataTo[i])
+                        stat = True
             if stat != True:
-                translate.append(a)
+                if ff == True:
+                    translate.append(a + "?")
+                else:
+                    translate.append(a)
 
         for j, b in enumerate(translate):
             strResult += translate[j] + " "
