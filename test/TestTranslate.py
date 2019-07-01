@@ -114,7 +114,8 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     '''
-    Methos untuk mengecek bahasa dari Combo box
+        fungsi untuk mengecek bahasa dari Combo box
+        :param mLang # nilai kembalian
     '''
 
     def cekLang(self, lang):
@@ -132,7 +133,7 @@ class Ui_MainWindow(object):
             return mLang
 
     '''
-    method untuk menukar bahasa awal dan bahasa tujuan
+        method untuk menukar bahasa awal dan bahasa tujuan
     '''
 
     def swap(self):
@@ -141,8 +142,30 @@ class Ui_MainWindow(object):
         self.langFrom.setCurrentText(txtT)
         self.langTo.setCurrentText(txtF)
 
+    """
+        fungsi untuk mengecek apakah ada simbol "?" pada string kata
+        :param afound # nilai kembalian
+    """
+
+    def cekSym(self, str):
+        afound = False
+        for i, x in enumerate(str):
+            if x == "?":
+                afound = True
+                break
+            else:
+                print("false")
+                afound = False
+
+        return afound
+
     '''
-    fungsi untuk mengembalikan hasil translasi lokal indonesia - ngapak
+       fungsi untuk mendapatkan string kata yang sudah di
+       terjemahkan
+       :param data # adalah data inputan dari leFrom
+       :param dataFrom # adalah data bahasa awal
+       :param dataTo # adalah data bahasa tujuan 
+       :param strResult # nilai kembalian
     '''
 
     def nTrans(self, data, dataFrom, dataTo):
@@ -150,24 +173,34 @@ class Ui_MainWindow(object):
         strResult = ""
         for a in data:
             stat = False
+            ff = self.cekSym(a)
             for i, x in enumerate(dataFrom):
-                if a == x:
-                    translate.append(dataTo[i])
-                    stat = True
+                if ff == True:
+                    if a.replace("?", "") == x:
+                        translate.append(dataTo[i] + "?")
+                        stat = True
+                else:
+                    if a == x:
+                        translate.append(dataTo[i])
+                        stat = True
             if stat != True:
-                translate.append(a)
+                if ff == True:
+                    translate.append(a + "?")
+                else:
+                    translate.append(a)
 
         for j, b in enumerate(translate):
             strResult += translate[j] + " "
         return strResult
 
     '''
-        method untuk menerjemahkan text antara bahasa indonesia dan ngapak
+        fungsi untuk menerjemahkan text antara bahasa indonesia dan ngapak
+        :param strResult # nilai kembalian
     '''
 
     def ngapakTrans(self, mText, langF):
         data = mText.lower().split()
-        print (data)
+        print(data)
         indo = []
         ngapak = []
         strResult = ""
@@ -187,10 +220,10 @@ class Ui_MainWindow(object):
         print(indo)
         print(ngapak)
         print(strResult)
-        self.txtTo.setText(strResult)
+        return strResult
 
     '''
-    method untuk menampilkan text yang sudah di terjemahkan dari bahasa awal ke bahasa tujuan
+        method untuk menampilkan text yang sudah di terjemahkan dari bahasa awal ke bahasa tujuan
     '''
 
     def Show(self):
@@ -200,14 +233,27 @@ class Ui_MainWindow(object):
         print(lgF, lgT)
         if (lgF == "id" and lgT == "ng") or (lgF == "ng" and lgT == "id"):
             try:
-                self.ngapakTrans(self.txtFrom.toPlainText(), lgF)
+                strResult = self.ngapakTrans(self.txtFrom.toPlainText(), lgF)
+                self.txtTo.setText(strResult)
+            except:
+                self.txtTo.setText("Please try again...")
+        elif lgF == "ng" and lgT != "id":
+            try:
+                strResult = self.ngapakTrans(self.txtFrom.toPlainText(), "ng")
+                engTrans = Translator(from_lang="id", to_lang=lgT)
+                try:
+                    engTxt = engTrans.translate(strResult)
+                    self.txtTo.setText(engTxt)
+                except:
+                    self.txtTo.setText("Please try again...")
             except:
                 self.txtTo.setText("Please try again...")
         elif lgT == "ng" and lgF != "id":
             engTrans = Translator(from_lang=lgF, to_lang="id")
             try:
                 engTxt = engTrans.translate(self.txtFrom.toPlainText())
-                self.ngapakTrans(engTxt, "id")
+                strResult = self.ngapakTrans(engTxt, "id")
+                self.txtTo.setText(strResult)
             except:
                 self.txtTo.setText("Please try again...")
         else:
