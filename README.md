@@ -1,11 +1,11 @@
 # Translate
-This project about make tranlator between `Indonesia`, `English`, `Japan`, and `Ngapak` using `Google Translator API` and Local data which collect by our team for `Ngapak` Language.
+This project about makes translator among `Indonesia`, `English`, `Japan`, and `Ngapak` using `Google Translator API` and Local data which collect by our team for `Ngapak` Language.
 this project purpose to Artificial Intelligence programme
 
 ## Library
 
 ### csv
-this project need csv library for read `datalang.csv` to fetch restored to array
+this project need csv library for read `datalang.csv` to fetch data and restored to array
 import
 ```python
 import csv
@@ -33,7 +33,7 @@ from translate import Translator
 usage
 
 translate to target destination language using key `to_lang`
-with default language is english
+with default language is English `en`
 ```python
 from translate import Translator
 engTrans = Translator(to_lang="id")
@@ -56,7 +56,7 @@ except:
 ```
 
 ## Contribution
-if you wonder how can i contribute this project, you can clone and contribute Ngapak Language
+if you wonder how can I contribute to this project, you can clone and contribute Ngapak Language
 by fill up our vocabulary called `datalang.csv` on `test` package or
 
 ### Data Ngapak - Indonesia Language 
@@ -64,7 +64,7 @@ Data Language:  [datalang.csv]("https://github.com/derysudrajat/Translate/blob/m
 
 ![datalang.csv](screeshots/datalang.png)
 
-You can contribute to test our code using `Python` as main language.
+You can contribute to test our code using `Python` as the main language.
 
 Indonesia - Ngapak Test : [IndoNgapakTrans.py]("https://github.com/derysudrajat/Translate/blob/master/test/IndoNgapakTrans.py")
 
