@@ -19,9 +19,9 @@ ng = [] # variable for restored csv index 1 or Ngapak Language
 
 with open('datalang.csv') as csvDataFile:
     csvReader = csv.reader(csvDataFile)
-        for row in csvReader:
-            id.append(row[0])
-            ng.append(row[1])
+    for row in csvReader:
+        id.append(row[0])
+        ng.append(row[1])
 ```
 
 ### Translator
@@ -37,22 +37,22 @@ with default language is english
 ```python
 from translate import Translator
 engTrans = Translator(to_lang="id")
-    try:
-        engTxt = engTrans.translate("Hello World!")
-        self.txtTo.setText(engTxt)
-    except:
-        self.txtTo.setText("Please try again...")
+try:
+    engTxt = engTrans.translate("Hello World!")
+    self.txtTo.setText(engTxt)
+except:
+    self.txtTo.setText("Please try again...")
 ```
 or to more specific language using 2 digit language code or ISO 639-1 codes, you can find out
 more language code here [ISO 639-1]("https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes")  
 ```python
 from translate import Translator
 engTrans = Translator(from_lang="id", to_lang="en")
-    try:
-        engTxt = engTrans.translate("Halo Dunia!")
-        self.txtTo.setText(engTxt)
-    except:
-        self.txtTo.setText("Please try again...")
+try:
+    engTxt = engTrans.translate("Halo Dunia!")
+    self.txtTo.setText(engTxt)
+except:
+    self.txtTo.setText("Please try again...")
 ```
 
 ## Contribution
