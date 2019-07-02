@@ -14,6 +14,7 @@ from translate import Translator
 
 class Ui_MainWindow(object):
     def __init__(self):
+        super(Ui_MainWindow, self).__init__()
         """
         Define the variable name
         """
@@ -223,7 +224,8 @@ class Ui_MainWindow(object):
         return strResult
 
     '''
-        method untuk menampilkan text yang sudah di terjemahkan dari bahasa awal ke bahasa tujuan
+        method untuk menampilkan text yang sudah di terjemahkan 
+        dari bahasa awal ke bahasa tujuan
     '''
 
     def Show(self):
